@@ -7,8 +7,22 @@ jobs: # a basic unit of work in a run
     steps: # a series of commands to run
       - checkout  # pull down code from your version control system.
       - run:
-          name: Run Unit Tests
-          command: xcodebuild test -scheme circleci-demo-macos
+          name: Download Unity
+          command: curl -o https://download.unity3d.com/download_unity/e50cafbb4399/MacEditorInstaller/Unity.pkg
+      - run:
+          name: Install Unity
+          command: sudo -S installer -package ./unity.pkg -target / -verbose
+      - run:
+          name: Unity Licence Activate
+          command: |
+            set -e
+            set -x
+            mkdir -p /root/.cache/unity3d
+            mkdir -p /root/.local/share/unity3d/Unity/
+            set +x
+            echo 'Writing $UNITY_LICENSE_CONTENT to license file /root/.local/share/unity3d/Unity/Unity_lic.ulf'
+            echo "$UNITY_LICENSE_CONTENT" | base64 --decode | tr -d '\r' > /root/.local/share/unity3d/Unity/Unity_lic.ulf
+
 
   build: 
     macos:
