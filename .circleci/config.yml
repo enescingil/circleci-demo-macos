@@ -8,7 +8,7 @@ jobs: # a basic unit of work in a run
       - checkout  # pull down code from your version control system.
       - run:
           name: Download Unity
-          command: curl -o https://download.unity3d.com/download_unity/e50cafbb4399/MacEditorInstaller/Unity.pkg
+          command: curl -o ./unity.pkg https://download.unity3d.com/download_unity/e50cafbb4399/MacEditorInstaller/Unity.pkg
       - run:
           name: Install Unity
           command: sudo -S installer -package ./unity.pkg -target / -verbose
