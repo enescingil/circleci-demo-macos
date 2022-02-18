@@ -13,15 +13,25 @@ jobs: # a basic unit of work in a run
           name: Install Unity
           command: sudo -S installer -package ./unity.pkg -target / -verbose
       - run:
-          name: Unity Licence Activate
+          name: Run Unity
           command: |
-            set -e
-            set -x
-            sudo mkdir -p /root/.cache/unity3d
-            sudo mkdir -p /root/.local/share/unity3d/Unity/
-            set +x
-            echo 'Writing $UNITY_LICENSE_CONTENT to license file /root/.local/share/unity3d/Unity/Unity_lic.ulf'
-            echo "$UNITY_LICENSE_CONTENT" | base64 --decode | tr -d '\r' > /root/.local/share/unity3d/Unity/Unity_lic.ulf
+            /Applications/Unity/Unity.app/Contents/MacOS/Unity -logfile &
+            sleep 15
+            sudo killall Unity
+      - run:
+          name: Unity Licence Activate
+          command: /Applications/Unity/Unity.app/Contents/MacOS/Unity -quit -batchmode -username $UNITY_EMAIL -password $UNITY_PW -logfile
+      
+      #- run:
+      #    name: Unity Licence Activate
+      #    command: |
+      #      set -e
+      #      set -x
+      #      sudo mkdir -p /root/.cache/unity3d
+      #      sudo mkdir -p /root/.local/share/unity3d/Unity/
+      #      set +x
+      #      echo 'Writing $UNITY_LICENSE_CONTENT to license file /root/.local/share/unity3d/Unity/Unity_lic.ulf'
+      #      echo "$UNITY_LICENSE_CONTENT" | base64 --decode | tr -d '\r' > /root/.local/share/unity3d/Unity/Unity_lic.ulf
 
 
   build: 
